@@ -1,0 +1,10 @@
+#- name: download wordpress
+#  get_url:
+#    url: https://wordpress.org/latest.tar.gz
+#    dest: /tmp/latest.tar.gz
+
+- name: unzip wordpress
+  shell: tar xfvz /tmp/latest.tar.gz -C /vagrant/  --owner vagrant --group vagrant --no-same-owner
+
+- name: remove packed wordpress
+  shell: rm /tmp/latest.tar.gz

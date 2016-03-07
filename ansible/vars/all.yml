@@ -8,7 +8,7 @@ vagrant_local:
     vm: { base_box: trusty64, hostname: default, ip: 192.168.33.101, memory: '1024', sharedfolder: ./, useVagrantCloud: '1', syncType: nfs }
 nginx:
     install: '1'
-    docroot: /vagrant
+    docroot: /vagrant/wordpress
     servername: wordpress.dev
 mysql:
     install: '1'
