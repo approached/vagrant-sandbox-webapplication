@@ -25,11 +25,11 @@ end
 Vagrant.configure("2") do |config|
 
     config.vm.provider :virtualbox do |v|
-        v.name = "wordpress"
+        v.name = "sandbox-webapplication"
         v.customize [
             "modifyvm", :id,
             "--name", "wordpress",
-            "--memory", 1024,
+            "--memory", 2048,
             "--natdnshostresolver1", "on",
             "--cpus", 1,
         ]
@@ -52,5 +52,5 @@ Vagrant.configure("2") do |config|
         config.vm.provision :shell, path: "ansible/windows.sh", args: ["wordpress"]
     end
 
-    config.vm.synced_folder "./", "/vagrant", type: "nfs"
+    config.vm.synced_folder ".", "/vagrant", id: "v-root", mount_options: ["rw", "tcp", "nolock", "noacl", "async"], type: "nfs", nfs_udp: false
 end

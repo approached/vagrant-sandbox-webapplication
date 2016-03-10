@@ -1,0 +1,21 @@
+- name: download drupal
+  get_url:
+    url: https://ftp.drupal.org/files/projects/drupal-8.0.5.tar.gz
+    dest: /tmp/latest.tar.gz
+
+- name: unzip drupal
+  shell: tar xfvz /tmp/latest.tar.gz -C /vagrant/  --owner vagrant --group vagrant --no-same-owner
+
+- name: renamve drupal dir
+  shell: mv /vagrant/drupal-8.0.5 /vagrant/drupal
+
+- name: remove packed drupal
+  shell: rm /tmp/latest.tar.gz
+
+- name: create database
+  mysql_db: name=drupal state=present login_user=root login_password={{ mysql.root_password }}
+
+- name: add nginx site
+  sudo: yes
+  template: src=drupal.tpl dest=/etc/nginx/sites-enabled/drupal
+  notify: restart nginx

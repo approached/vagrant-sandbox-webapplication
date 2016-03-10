@@ -1,0 +1,37 @@
+- name: download
+  get_url:
+    url: https://github.com/laravel/laravel/archive/5.1.zip
+    dest: /tmp/laravel.zip
+
+- name: unzip
+  shell: unzip /tmp/laravel.zip  -d /vagrant/
+
+- name: rename
+  shell: mv /vagrant/laravel-5.1/ /vagrant/laravel
+
+- name: remove zip file
+  shell: rm /tmp/laravel.zip
+
+- name: create database
+  mysql_db: name=laravel state=present login_user=root login_password={{ mysql.root_password }}
+
+- name: add nginx site
+  sudo: yes
+  template: src=laravel.tpl dest=/etc/nginx/sites-enabled/laravel
+  notify: restart nginx
+
+- name: add env
+  sudo: yes
+  template: src=env.tpl dest=/vagrant/laravel/.env
+
+- name: Install Composer
+  shell: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer creates=/usr/local/bin/composer
+
+- name: storage rights
+  file: path=/vagrant/laravel/storage mode=0777
+
+- name: Composer dependencies
+  composer: command=install working_dir=/vagrant/laravel no_dev=no
+
+- name: Laravel cronjob
+  cron: name="laravel" job="/usr/bin/php /vagrant/laravel/artisan schedule:run >> /dev/null 2>&1"

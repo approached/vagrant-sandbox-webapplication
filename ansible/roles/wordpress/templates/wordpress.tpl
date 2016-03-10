@@ -1,10 +1,10 @@
 server {
     listen  80;
 
-    root {{ nginx.docroot }};
+    root /vagrant/wordpress;
     index index.html index.php;
 
-    server_name {{ nginx.servername }};
+    server_name wordpress.dev;
 
     location / {
         try_files $uri $uri/ /index.php?$query_string;

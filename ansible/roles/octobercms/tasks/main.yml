@@ -1,0 +1,21 @@
+- name: download
+  get_url:
+    url: http://octobercms.com/download
+    dest: /tmp/octobercms.zip
+
+- name: unzip
+  shell: unzip /tmp/octobercms.zip  -d /vagrant/
+
+- name: rename
+  shell: mv /vagrant/install-master /vagrant/octobercms
+
+- name: remove zip file
+  shell: rm /tmp/octobercms.zip
+
+- name: create database
+  mysql_db: name=octobercms state=present login_user=root login_password={{ mysql.root_password }}
+
+- name: add nginx site
+  sudo: yes
+  template: src=octobercms.tpl dest=/etc/nginx/sites-enabled/octobercms
+  notify: restart nginx

@@ -2,10 +2,11 @@
 server:
     install: '1'
     timezone: UTC
-    locale: de_DE.UTF-8
+    locale: de_DE.UTF-8,
+    packages: [vim, unzip, htop]
 vagrant_local:
     install: '1'
-    vm: { base_box: trusty64, hostname: wordpress, ip: 192.168.33.101, memory: '1024', sharedfolder: ./, useVagrantCloud: '1', syncType: nfs }
+    vm: { base_box: trusty64, hostname: sandbox-webapplication, ip: 192.168.33.101, memory: '2048', sharedfolder: ./, useVagrantCloud: '1', syncType: nfs }
 nginx:
     install: '1'
     docroot: /vagrant/wordpress
@@ -13,12 +14,8 @@ nginx:
 mysql:
     install: '1'
     root_password: password
-    database: wordpress
-    user: user
-    password: password
-    dump: ''
 php:
     install: '1'
     ppa: php5-5.6
-    packages: [php5-cli, php5-intl, php5-mcrypt, php5-mysql]
+    packages: [php5-cli, php5-intl, php5-mcrypt, php5-mysql, php5-gd, php5-curl]
 

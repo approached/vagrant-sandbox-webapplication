@@ -9,4 +9,7 @@
     - nginx
     - mysql
     - php
+    - drupal
     - wordpress
+    - octobercms
+    - laravel

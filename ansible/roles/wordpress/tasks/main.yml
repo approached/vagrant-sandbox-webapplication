@@ -8,3 +8,11 @@
 
 - name: remove packed wordpress
   shell: rm /tmp/latest.tar.gz
+
+- name: create database
+  mysql_db: name=wordpress state=present login_user=root login_password={{ mysql.root_password }}
+
+- name: add nginx site
+  sudo: yes
+  template: src=wordpress.tpl dest=/etc/nginx/sites-enabled/wordpress
+  notify: restart nginx
