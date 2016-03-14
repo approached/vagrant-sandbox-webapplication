@@ -1,10 +1,10 @@
 server {
     listen  80;
 
-    root /vagrant/laravel/public;
+    root /vagrant/dick/public;
     index index.html index.php;
 
-    server_name laravel.dev;
+    server_name dick.dev;
 
     location / {
         try_files $uri $uri/ /index.php?$query_string;

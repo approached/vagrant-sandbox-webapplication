@@ -1,4 +1,4 @@
 ---
 - name: Install Nginx
-  sudo: yes
+  become: yes
   apt: pkg=nginx state=latest

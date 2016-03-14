@@ -16,6 +16,6 @@
   mysql_db: name=drupal state=present login_user=root login_password={{ mysql.root_password }}
 
 - name: add nginx site
-  sudo: yes
+  become: yes
   template: src=drupal.tpl dest=/etc/nginx/sites-enabled/drupal
   notify: restart nginx

@@ -16,6 +16,6 @@
   mysql_db: name=octobercms state=present login_user=root login_password={{ mysql.root_password }}
 
 - name: add nginx site
-  sudo: yes
+  become: yes
   template: src=octobercms.tpl dest=/etc/nginx/sites-enabled/octobercms
   notify: restart nginx

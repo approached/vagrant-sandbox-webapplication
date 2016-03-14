@@ -1,0 +1,12 @@
+APP_ENV=local
+APP_DEBUG=true
+APP_KEY=oOFIbEwRWKmT8SCoKyAOz82pwhoXpIrp
+
+DB_HOST=localhost
+DB_DATABASE=dick
+DB_USERNAME=root
+DB_PASSWORD=password
+
+CACHE_DRIVER=file
+SESSION_DRIVER=file
+QUEUE_DRIVER=sync

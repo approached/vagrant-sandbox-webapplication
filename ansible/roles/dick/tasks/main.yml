@@ -1,0 +1,46 @@
+- name: download
+  get_url:
+    url: https://github.com/tabacitu/dick/archive/0.7.5.zip
+    dest: /tmp/dick.zip
+
+- name: unzip
+  shell: unzip /tmp/dick.zip  -d /vagrant/
+
+- name: rename
+  shell: mv /vagrant/dick-0.7.5/ /vagrant/dick
+
+- name: remove zip file
+  shell: rm /tmp/dick.zip
+
+- name: create database
+  mysql_db: name=dick state=present login_user=root login_password={{ mysql.root_password }}
+
+- name: add nginx site
+  sudo: yes
+  template: src=dick.tpl dest=/etc/nginx/sites-enabled/dick
+  notify: restart nginx
+
+- name: add env
+  sudo: yes
+  template: src=env.tpl dest=/vagrant/dick/.env
+
+- name: Install Composer
+  shell: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer creates=/usr/local/bin/composer
+
+- name: storage rights
+  file: path=/vagrant/dick/storage mode=0777
+
+- name: Composer dependencies
+  composer: command=install working_dir=/vagrant/dick no_dev=no
+
+- name: dick cronjob
+  cron: name="dick" job="/usr/bin/php /vagrant/dick/artisan schedule:run >> /dev/null 2>&1"
+
+- name: vendor:publish
+  shell: cd /vagrant/dick && php artisan vendor:publish --provider="Dick\Settings\SettingsServiceProvider"
+
+- name: migrate
+  shell: cd /vagrant/dick && php artisan migrate
+
+- name: seed
+  shell: cd /vagrant/dick && php artisan db:seed

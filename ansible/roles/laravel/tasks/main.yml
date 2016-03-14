@@ -16,12 +16,12 @@
   mysql_db: name=laravel state=present login_user=root login_password={{ mysql.root_password }}
 
 - name: add nginx site
-  sudo: yes
+  become: yes
   template: src=laravel.tpl dest=/etc/nginx/sites-enabled/laravel
   notify: restart nginx
 
 - name: add env
-  sudo: yes
+  become: yes
   template: src=env.tpl dest=/vagrant/laravel/.env
 
 - name: Install Composer
